@@ -38,6 +38,33 @@ public class MainActivity extends AppCompatActivity {
 
         //getPost();
 
+        getComments();
+
+    }
+
+    public void getComments(){
+        Call<List<Comment>> call = jsonPlaceholder.getComments();
+
+        call.enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+
+                if (!response.isSuccessful()){
+                    Toast.makeText(MainActivity.this, response.code() , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                List<Comment> comments = response.body();
+                CommentAdapter commentAdapter = new CommentAdapter(MainActivity.this , comments);
+                recyclerView.setAdapter(commentAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Comment>> call, Throwable t) {
+
+                Toast.makeText(MainActivity.this, t.getMessage() , Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void getPost(){

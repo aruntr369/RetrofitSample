@@ -11,5 +11,5 @@ public interface JSONPlaceholder {
     Call<List<Post>> getPost();
 
     @GET("posts/1/comments")
-    Call<List<Comment>> getComment();
+    Call<List<Comment>> getComments();
 }
