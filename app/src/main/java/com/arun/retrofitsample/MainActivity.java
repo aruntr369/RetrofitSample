@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,11 +39,46 @@ public class MainActivity extends AppCompatActivity {
 
         //getPost();
 
-        getComments();
+        //getComments();
+
+        createPost();
+
+    }
+    private void  createPost(){
+        //Post post = new Post("20","First Tittle","first textttt");
+        //Call<Post>call = jsonPlaceholder.createpost(post);
+
+        Call<Post> call = jsonPlaceholder.createPost("13" , "Second Title" , "Second Text");
+
+
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if (!response.isSuccessful()){
+                    Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                List<Post> postList = new ArrayList<>();
+                postList.add(response.body());
+
+                PostAdapter postAdapter = new PostAdapter(MainActivity.this,postList);
+                recyclerView.setAdapter(postAdapter);
+
+                Toast.makeText(MainActivity.this, response.code()+" Response", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage() , Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
     }
 
-    public void getComments(){
+
+    private void getComments(){
         Call<List<Comment>> call = jsonPlaceholder.getComments(3);
 
         call.enqueue(new Callback<List<Comment>>() {
@@ -67,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getPost(){
+    private void getPost(){
         Call<List<Post>> call = jsonPlaceholder.getPost();
         call.enqueue(new Callback<List<Post>>() {
             @Override

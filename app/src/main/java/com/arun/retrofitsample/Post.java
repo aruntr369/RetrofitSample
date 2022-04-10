@@ -4,9 +4,8 @@ public class Post {
 
     private String userId , id , title , body;
 
-    public Post(String userId, String id, String title, String body) {
+    public Post(String userId, String title, String body) {
         this.userId = userId;
-        this.id = id;
         this.title = title;
         this.body = body;
     }
