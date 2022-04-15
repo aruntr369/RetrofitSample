@@ -41,9 +41,57 @@ public class MainActivity extends AppCompatActivity {
 
         //getComments();
 
-        createPost();
+        //createPost();
+
+        //updatePost();
+
+        deletePost();
 
     }
+
+    private void deletePost() {
+
+        Call<Void> call = jsonPlaceholder.deletePost(2);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()){
+                    return;
+                }
+                Toast.makeText(MainActivity.this, "Deleted Successfully : " + response.code(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void updatePost() {
+        Post post = new Post("13" , "new title" , null);
+        Call<Post> call = jsonPlaceholder.patchPost(2 , post);
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if (!response.isSuccessful()){
+                    return;
+                }
+
+                List<Post> postList = new ArrayList<>();
+                postList.add(response.body());
+                PostAdapter adapter = new PostAdapter(MainActivity.this , postList);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+
+            }
+        });
+    }
+
+
     private void  createPost(){
         //Post post = new Post("20","First Tittle","first textttt");
         //Call<Post>call = jsonPlaceholder.createpost(post);
