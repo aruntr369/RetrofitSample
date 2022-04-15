@@ -121,8 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 
@@ -151,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void getPost(){
         Call<List<Post>> call = jsonPlaceholder.getPost();
         call.enqueue(new Callback<List<Post>>() {
@@ -170,6 +169,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }
